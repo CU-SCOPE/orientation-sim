@@ -12,7 +12,7 @@ from pyquaternion import Quaternion
 from kdtree import kdTree
 
 # Read in model file
-model = mesh.Mesh.from_file('models/galileo_red.stl')
+model = mesh.Mesh.from_file('../models/galileo_red.stl')
 model.rotate([-0.5, 0.0, 0.0], math.radians(90))
 
 x = model.x
@@ -22,7 +22,7 @@ z = model.z
 tree = kdTree(x,y,z)
 
 # Read frame
-scan = np.loadtxt('frames/frame2.csv',delimiter=',')
+scan = np.loadtxt('../frames/frame2.csv',delimiter=',')
 
 
 def best_fit_transform(A, B):
