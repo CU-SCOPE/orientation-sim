@@ -25,7 +25,7 @@ def readscanpcd(filename):
 
     return np.array(x), np.array(y), np.array(z)
 
-x,y,z = readscanpcd('framerotated_noisy00000.pcd')
+x,y,z = readscanpcd('frame2_noisy00000.pcd')
 x = x[np.isfinite(x)]
 y = y[np.isfinite(y)]
 z = z[np.isfinite(z)]
@@ -33,4 +33,4 @@ arr = np.empty((x.shape[0],3))
 arr[:,0] = x
 arr[:,1] = y
 arr[:,2] = z
-np.savetxt('frame1_noisy.csv', arr, delimiter=',')
+np.savetxt('frame2.csv', arr, delimiter=',')
