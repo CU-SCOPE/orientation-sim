@@ -7,22 +7,21 @@ Created on Thu Oct 05 17:18:51 2017
 
 import numpy as np
 from stl import mesh
-import csv
 import math
-from scipy import spatial
 from pyquaternion import Quaternion
 from kdtree import kdTree
 
+# Read in model file
 model = mesh.Mesh.from_file('models/galileo_red.stl')
 model.rotate([-0.5, 0.0, 0.0], math.radians(90))
 
 x = model.x
 y = model.y
 z = model.z
-
+# Init k-d tree using points from model
 tree = kdTree(x,y,z)
 
-
+# Read frame
 scan = np.loadtxt('frames/frame2.csv',delimiter=',')
 
 
@@ -125,12 +124,15 @@ def icp(A, tree, init_pose=None, max_iterations=20, tolerance=0.001):
     return T, distances, i
 
 
-
+# Shift scan to origin. This accounts for offset from camera
+# qInit =  # add if using initial pose estimation
 scan = scan + [0,0,4]
 (Transform, _, _) = icp(scan,tree, init_pose=None,tolerance=0.0001,max_iterations=10)
 
- 
+# convert from transformation matrix to quaternion
 qT = Quaternion(matrix=Transform)
+# compare to actual
 qActual = Quaternion([ .999,  0.044,  0,  0.]).inverse
 qp = qActual * qT.inverse
-print(qp.degrees)
+# Print degree offset
+print('Diff(degrees):', qp.degrees)
